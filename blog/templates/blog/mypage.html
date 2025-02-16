@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マイページ - 純文満帆社</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* ページ全体の高さを確保 */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1; /* コンテンツエリアをフレキシブルに調整 */
+        }
+        header {
+            background-color: #004aad; /* アイコンの背景色と合わせたブルー */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans"> 
+    <!-- ヘッダー -->
+    <header class="shadow py-4 px-8 flex justify-between items-center">
+    <!-- トップページリンク -->
+    <a href="/" class="flex items-center">
+        <img src="{% static 'images/純文.png' %}" alt="純文満帆社ロゴ" class="h-12"> <!-- PNGアイコン -->
+    </a>
+    <!-- ヘッダー内リンク -->
+    <nav class="flex space-x-6">
+        <a href="{% url 'blog:post_new' %}" class="text-white hover:text-yellow-300">執筆</a>
+        <a href="{% url 'blog:mypage' %}" class="text-white hover:text-yellow-300">マイページ</a>
+    </nav>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold text-center text-blue-600 mb-6">マイページ</h1>
+
+        <!-- ユーザー情報 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+            <p class="mb-4">あなたのユーザーID: <span class="font-bold">{{ user.username }}</span></p>
+            <p class="text-gray-600">登録メール: {{ user.email }}</p>
+        </div>
+
+        <!-- 投稿一覧 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-bold text-gray-700 mb-4">投稿一覧</h2>
+            <ul>
+                {% for post in posts %}
+                <li class="border-b py-4">
+                    <a href="{% url 'blog:post_detail' post.pk %}" class="text-blue-600 hover:underline">
+                        {{ post.title }}
+                    </a>
+                    <td class="border border-gray-300 px-4 py-2">
+                        {% if post.is_published %}
+                            公開
+                        {% else %}
+                            非公開
+                        {% endif %}
+                    </td>
+                    <div class="flex justify-between text-gray-600">
+                        <span>{{ post.created_at|date:"Y年m月d日" }}</span>
+                        <div class="space-x-4">
+                            <a href="{% url 'blog:toggle_publish' post.pk %}" class="text-blue-500 hover:underline">
+                                {% if post.is_published %}
+                                    非公開にする
+                                {% else %}
+                                    公開する
+                                {% endif %}
+                            </a>
+                            <a href="{% url 'blog:edit_post' post.pk %}" class="text-blue-500 hover:underline">編集</a>
+                            <a href="{% url 'blog:delete_post' post.pk %}" class="text-red-500 hover:underline">削除</a>
+                        </div>
+                    </div>
+                </li>
+                {% empty %}
+                <p class="text-gray-600">まだ投稿がありません。</p>
+                {% endfor %}
+            </ul>
+        </div>
+    </main>
+
+<!-- フッター -->
+<footer class="bg-gray-800 text-white py-4">
+    <div class="container mx-auto text-center">
+        <p class="mb-2">© 2024 純文満帆社</p>
+        <nav class="flex justify-center space-x-4">
+            <a href="{% url 'blog:about' %}" class="text-gray-400 hover:text-white">純文満帆社について</a>
+            <a href="{% url 'blog:guidelines' %}" class="text-gray-400 hover:text-white">ガイドライン</a>
+            <a href="{% url 'blog:contact' %}" class="text-gray-400 hover:text-white">お問い合わせ</a>
+        </nav>
+    </div>
+</footer>
+</body>
+</html>

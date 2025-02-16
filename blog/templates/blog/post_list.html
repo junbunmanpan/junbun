@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>純文満帆社</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* ページ全体の高さを確保 */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1; /* コンテンツエリアをフレキシブルに調整 */
+        }
+        header {
+            background-color: #004aad; /* アイコンの背景色と合わせたブルー */
+        }
+        header img {
+            height: 60px; /* アイコン画像の高さを調整 */
+            width: auto; /* アスペクト比を保持 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- ヘッダー -->
+<header class="shadow py-4 px-8 flex justify-between items-center">
+    <!-- トップページリンク -->
+    <a href="/" class="flex items-center">
+        <img src="{% static 'images/純文.png' %}" alt="純文満帆社ロゴ" class="h-12"> <!-- PNGアイコン -->
+    </a>
+    <!-- ヘッダー内リンク -->
+    <nav class="flex space-x-6">
+        <a href="{% url 'blog:post_new' %}" class="text-white hover:text-yellow-300">執筆</a>
+    </nav>
+</header>
+
+<!-- メインコンテンツ -->
+<main class="container mx-auto p-8">
+    <!-- お知らせリスト -->
+    <section class="mb-8">
+        <h1 class="text-3xl font-bold text-left text-blue-600 mb-6">お知らせ</h1>
+        <ul>
+            {% for announcement in announcements %}
+            <a href="{% url 'blog:announcement_detail' announcement.pk %}" class="block pb-4 mb-4 border-b border-gray-300 hover:bg-gray-100 rounded-lg">
+                <li>
+                    <h2 class="text-xl font-semibold text-gray-800">{{ announcement.title }}</h2>
+                    <p class="text-sm text-gray-500 text-right">更新日: {{ announcement.updated_at|date:"Y年m月d日" }}</p>
+                </li>
+            </a>
+            {% empty %}
+            <li class="text-gray-500">お知らせはありません。</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <!-- 新着一覧 -->
+    <section>
+        <h1 class="text-2xl font-bold text-blue-600 mb-4">新着一覧</h1>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {% for post in posts %}
+            <div class="border rounded-lg shadow-lg bg-white p-4">
+                <!-- 投稿ID -->
+                <p class="text-sm text-gray-500">投稿ID: <span class="font-semibold">{{ post.unique_id }}</span></p>
+                
+                <!-- 投稿時間 -->
+                <p class="text-xs text-gray-400 mb-2">投稿日時: {{ post.created_at|date:"Y年m月d日 H:i" }}</p>
+
+                <!-- ワードクラウド画像（リンク付き） -->
+                <a href="{% url 'blog:post_detail' post.pk %}">
+                    <img src="{{ post.wordcloud_url }}" alt="ワードクラウド" class="w-full h-48 object-cover rounded-lg shadow-md">
+                </a>
+            </div>
+            {% empty %}
+            <p class="text-gray-500">投稿はありません。</p>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+
+<!-- フッター -->
+<footer class="bg-gray-800 text-white py-4">
+    <div class="container mx-auto text-center">
+        <p class="mb-2">© 2024 純文満帆社</p>
+        <nav class="flex justify-center space-x-4">
+            <a href="{% url 'blog:about' %}" class="text-gray-400 hover:text-white">純文満帆社について</a>
+            <a href="{% url 'blog:guidelines' %}" class="text-gray-400 hover:text-white">ガイドライン</a>
+            <a href="{% url 'blog:contact' %}" class="text-gray-400 hover:text-white">お問い合わせ</a>
+        </nav>
+    </div>
+</footer>
+
+</body>
+</html>
+

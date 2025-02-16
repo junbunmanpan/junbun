@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン - 純文満帆社</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
+        <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">ログイン</h1>
+        <form method="post" action="{% url 'blog:login' %}">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700">メールアドレスまたはユーザーID</label>
+                <input type="text" id="username" name="username" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="メールアドレスまたはユーザーIDを入力" required>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="block text-gray-700">パスワード</label>
+                <input type="password" id="password" name="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="パスワードを入力" required>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">ログイン</button>
+            <p class="mt-4 text-center">
+                <a href="{% url 'blog:password_reset' %}" class="text-blue-600 hover:underline">パスワードを忘れた場合はこちら</a>
+            </p>
+            <p class="mt-4 text-center">
+                <a href="{% url 'blog:signup' %}" class="text-blue-600 hover:underline">新規アカウントを作成</a>
+            </p>
+        </form>
+        {% if form.errors %}
+        <div class="mt-4 bg-red-100 text-red-500 p-4 rounded-lg">
+            <ul class="list-disc pl-5">
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

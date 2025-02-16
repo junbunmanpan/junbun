@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文壇</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <main class="container mx-auto p-8">
+        <h1 class="text-2xl font-bold mb-4">文壇</h1>
+        <div class="bg-white rounded-lg shadow p-4 mb-4">
+            <ul>
+                {% for message in messages %}
+                <li class="mb-2 border-b pb-2">
+                    <p><strong>{{ message.user.username }}</strong> ({{ message.created_at|date:"Y年m月d日 H:i" }})</p>
+                    <p>{{ message.content }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% if user.is_authenticated %}
+        <form action="{% url 'chat:post_message' %}" method="post" class="mt-4">
+            {% csrf_token %}
+            <textarea name="content" class="w-full p-2 border rounded-lg mb-2" rows="3" placeholder="メッセージを入力"></textarea>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">投稿</button>
+        </form>
+        {% else %}
+        <p class="text-gray-600">ログインすると投稿できます。</p>
+        {% endif %}
+    </main>
+</body>
+</html>

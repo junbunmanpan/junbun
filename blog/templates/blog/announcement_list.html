@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お知らせ一覧 - 純文満帆社</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* ページ全体の高さを確保 */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1; /* コンテンツエリアをフレキシブルに調整 */
+        }
+    </style>
+    
+</head>
+<body class="bg-gray-100 font-sans">
+    <header class="bg-white shadow py-4 px-8">
+        <a href="/" class="text-lg font-bold text-blue-600">純文満帆社</a>
+    </header>
+
+    <main class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold text-center text-blue-600 mb-6">お知らせ一覧</h1>
+        <ul class="bg-white p-6 rounded-lg shadow-lg">
+            {% for announcement in announcements %}
+            <li class="border-b py-4">
+                <a href="{% url 'blog:announcement_detail' announcement.pk %}" class="text-blue-600 hover:underline">
+                    {{ announcement.title }}
+                </a>
+                <p class="text-gray-600 text-sm">{{ announcement.created_at|date:"Y年m月d日 H:i" }}</p>
+            </li>
+            {% empty %}
+            <p class="text-gray-600">現在お知らせはありません。</p>
+            {% endfor %}
+        </ul>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-4 text-center">
+        <p>© 2024 純文満帆社</p>
+    </footer>
+</body>
+</html>

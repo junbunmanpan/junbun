@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ announcement.title }} - 純文満帆社</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* ページ全体の高さを確保 */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1; /* コンテンツエリアをフレキシブルに調整 */
+        }
+        header {
+            background-color: #004aad; /* アイコンの背景色と合わせたブルー */
+        }
+    </style>
+    
+</head>
+<body class="bg-gray-100 font-sans">
+    <header class="shadow py-4 px-8 flex justify-between items-center">
+        <!-- トップページリンク -->
+        <a href="/" class="flex items-center">
+            <img src="{% static 'images/純文.png' %}" alt="純文満帆社ロゴ" class="h-12"> <!-- PNGアイコン -->
+        </a>
+        <!-- ヘッダー内リンク -->
+        <nav class="flex space-x-6">
+            <a href="{% url 'blog:post_new' %}" class="text-white hover:text-yellow-300">執筆</a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold text-blue-600 mb-4">{{ announcement.title }}</h1>
+        <p class="text-gray-600 text-sm mb-4">{{ announcement.created_at|date:"Y年m月d日 H:i" }}</p>
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <p>{{ announcement.content }}</p>
+        </div>
+        <a href="{% url 'blog:announcement_list' %}" class="mt-6 inline-block text-blue-600 hover:underline">お知らせ一覧に戻る</a>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-4 text-center">
+        <p>© 2024 純文満帆社</p>
+    </footer>
+</body>
+</html>

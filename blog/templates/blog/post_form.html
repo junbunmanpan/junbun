@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投稿フォーム-純文満帆社</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    <style>
+        /* ページ全体の高さを確保 */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1; /* コンテンツエリアをフレキシブルに調整 */
+        }
+        header {
+            background-color: #004aad; /* アイコンの背景色と合わせたブルー */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+<!-- ヘッダー -->
+<header class="shadow py-4 px-8 flex justify-between items-center">
+    <!-- トップページリンク -->
+    <a href="/" class="flex items-center">
+        <img src="{% static 'images/純文.png' %}" alt="純文満帆社ロゴ" class="h-12"> <!-- PNGアイコン -->
+    </a>
+</header>
+
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold text-center text-blue-600 mb-6">新しい投稿を作成</h1>
+        <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-6">
+                    <label for="id_text" class="block text-gray-700 font-semibold mb-2">本文</label>
+                    {{ form.text }}
+                </div>
+                
+                <div class="flex justify-end space-x-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <!-- 投稿ボタン -->
+                        <button type="submit" name="action" value="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                            投稿
+                        </button>
+                    </form>
+                </div>
+            </form>
+
+            <script>
+                document.getElementById("content").addEventListener("input", function() {
+                    let text = this.value;
+                    if (text.length > 10) {  // ある程度の長さがないと生成しない
+                        fetch("{% url 'blog:generate_wordcloud' %}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRFToken": "{{ csrf_token }}"
+                            },
+                            body: JSON.stringify({ text: text })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.wordcloud_url) {
+                                document.getElementById("wordcloud-container").innerHTML = `<img src="${data.wordcloud_url}" class="w-full h-full object-contain">`;
+                            }
+                        })
+                        .catch(error => console.error("エラー:", error));
+                    }
+                });
+            </script>
+        
+        </div>
+    </div>
+</body>
+</html>

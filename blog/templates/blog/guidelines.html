@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ガイドライン - 純文満帆社</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* ページ全体の高さを確保 */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1; /* コンテンツエリアをフレキシブルに調整 */
+        }
+        header {
+            background-color: #004aad; /* アイコンの背景色と合わせたブルー */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- ヘッダー -->
+    <header class="shadow py-4 px-8 flex justify-between items-center">
+        <!-- トップページリンク -->
+        <a href="/" class="flex items-center">
+            <img src="{% static 'images/純文.png' %}" alt="純文満帆社ロゴ" class="h-12"> <!-- PNGアイコン -->
+        </a>
+        <!-- ヘッダー内リンク -->
+        <nav class="flex space-x-6">
+            <a href="{% url 'blog:post_new' %}" class="text-white hover:text-yellow-300">執筆</a>
+        </nav>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="container mx-auto p-8">
+        <!-- ガイドライン -->
+        <section>
+            <h1 class="text-3xl font-bold text-center text-blue-600 mb-6">ガイドライン</h1>
+            <div class="bg-white p-6 rounded-lg shadow-lg leading-relaxed text-gray-800">
+                <p>純文満帆社をご利用いただき、ありがとうございます。本ガイドラインでは、利用者の皆様が安心してご利用いただけるよう、以下のルールを定めています。</p>
+
+                <h2 class="text-2xl font-semibold mt-6 mb-4">1. 投稿の内容について</h2>
+                <p>文芸に関連するすべてのコンテンツが対象です。エッセイ、詩、小説、評論など、形式に制限はありません。</p>
+                <p><strong>禁止コンテンツ:</strong></p>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>二次創作: 他者の著作物を基にした二次創作は禁止です。オリジナルの作品のみ受け付けます。</li>
+                    <li>過度な性的描写: セックス描写やその描写が過度に詳細なものは避けてください。</li>
+                    <li>痴漢やセクハラを題材にした内容: 社会的に不適切と見なされるため、絶対に禁止します。</li>
+                    <li>反社会的内容: 反社会的な内容（暴力、差別、ヘイトスピーチ等）や犯罪行為を助長するものは全て禁止です。</li>
+                </ul>
+
+                <h2 class="text-2xl font-semibold mt-6 mb-4">2. 投稿の品質基準</h2>
+                <p>投稿に対する品質基準はありません。誰でも気軽に投稿可能です。創作意欲を大切にしていただき、投稿後に他のユーザーと意見交換ができる場も提供されます。</p>
+
+                <h2 class="text-2xl font-semibold mt-6 mb-4">3. 投稿の修正と削除について</h2>
+                <p>投稿後の修正はできません。一度投稿された内容はそのまま公開されます。</p>
+                <p><strong>削除依頼:</strong> 投稿者本人からの削除依頼は受け付けません。ただし、内容に問題がある場合は、サイト側で削除を行う場合があります。削除を希望する場合は、問い合わせフォームから、問題点と投稿IDを明記してお知らせください。</p>
+
+                <h2 class="text-2xl font-semibold mt-6 mb-4">4. 投稿の表示順序</h2>
+                <p>作品は新着順に表示されます。特定の基準（人気順など）で並べる予定はありません。</p>
+
+                <h2 class="text-2xl font-semibold mt-6 mb-4">5. 不適切な投稿に対する対応</h2>
+                <p>不適切な投稿が見つかった場合は、問い合わせフォームを通じて投稿IDと問題点を報告してください。報告された内容について確認し、必要に応じて削除や修正を行います。対応後はお知らせで通知することがあります。</p>
+
+                <h2 class="text-2xl font-semibold mt-6 mb-4">6. 著作権と知的財産</h2>
+                <p>投稿された作品に関する著作権は「純文満帆社」に帰属します。投稿者は、投稿した作品の利用に関して一定の権利を放棄することに同意したものとします。</p>
+
+                <h2 class="text-2xl font-semibold mt-6 mb-4">7. 年齢制限</h2>
+                <p>年齢制限は設けません。すべてのユーザーが利用可能です。</p>
+
+                <h2 class="text-2xl font-semibold mt-6 mb-4">8. 規約の施行、変更について</h2>
+                <p>本ガイドラインは、当サイトに掲載された時点で効力を発揮します。サイト運営側は必要に応じてガイドラインを変更することがあります。変更があった場合は、このページで更新されるため、定期的にご確認ください。</p>
+
+                <p class="mt-6">皆様のご理解とご協力をお願いいたします。</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- フッター -->
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto text-center">
+            <p>© 2024 純文満帆社</p>
+        </div>
+    </footer>
+</body>
+</html>
