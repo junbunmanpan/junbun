@@ -29,7 +29,7 @@ DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 DJANGO_DEBUG=True
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['junbun.onrender.com', '127.0.0.1']
 
 
 # Application definition
