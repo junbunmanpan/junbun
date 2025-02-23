@@ -3,5 +3,7 @@ services:
     name: junbun
     env: python
     buildCommand: |
-      poetry install
-    startCommand: poetry run gunicorn junbun.wsgi:application --bind 0.0.0.0:$PORT
+      poetry install --no-root
+    startCommand: |
+      export PATH="$HOME/.local/bin:$PATH"
+      poetry run gunicorn junbun.wsgi:application --bind 0.0.0.0:$PORT
