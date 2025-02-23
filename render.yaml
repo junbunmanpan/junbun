@@ -3,7 +3,8 @@ services:
     name: junbun
     env: python
     buildCommand: |
+      pip install poetry  # Poetryが環境にない場合を考慮
       poetry install --no-root
     startCommand: |
-      export PATH="$HOME/.local/bin:$PATH"
+      export PATH="$(poetry env info --path)/bin:$PATH"
       poetry run gunicorn junbun.wsgi:application --bind 0.0.0.0:$PORT
