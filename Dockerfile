@@ -18,6 +18,5 @@ COPY . /code
 ENV SECRET_KEY "7gumcUcqQSoXD6Q41rIi714rmIwUNwoIJ0Lv6urjWJCHf9R5z4"
 RUN python manage.py collectstatic --noinput
 
-EXPOSE 8000
+CMD ["poetry", "run", "gunicorn", "junbun.wsgi:application", "--bind", "0.0.0.0:8000"]
 
-CMD ["sh", "-c", "poetry shell && gunicorn junbun.wsgi:application --bind 0.0.0.0:8000"]
