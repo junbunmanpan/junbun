@@ -12,28 +12,17 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url  # ← 追加
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x46tk#49h8%8&kt80fh-mxw-6b6yf3wlg5#rr%ukvrzr#witdt'
-
-# SECURITY WARNING: don't run with debug turned on in production!
+# セキュリティ設定
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-x46tk#49h8%8&kt80fh-mxw-6b6yf3wlg5#rr%ukvrzr#witdt")
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
-
-DJANGO_DEBUG=True
-
 
 ALLOWED_HOSTS = ["junbun.fly.dev", "localhost", "127.0.0.1"]
 
-
-# Application definition
-
+# アプリケーション設定
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,7 +35,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "whitenoise.middleware.WhiteNoiseMiddleware", 
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -76,55 +65,41 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'junbun.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# === ここが修正ポイント ===
+# 本番環境では PostgreSQL、ローカルでは SQLite3 を使う
+if os.getenv("DATABASE_URL"):
+    DATABASES = {
+        "default": dj_database_url.config(conn_max_age=600, ssl_require=True)
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+# ========================
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+# 言語と時間設定
+LANGUAGE_CODE = 'ja'  # 日本語対応
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
-
 USE_TZ = True
 
+# 静的ファイルの設定
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = '/static/'
-
-# 静的ファイルを置くディレクトリ
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-
-# 静的ファイルを収集するディレクトリ
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
+# メディアファイルの設定
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = BASE_DIR / "media"
 
 FONT_PATH = '/Users/toma/Library/Fonts/NotoSansCJK.ttc'
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 
