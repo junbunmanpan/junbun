@@ -12,7 +12,7 @@ WORKDIR /code
 RUN pip install poetry
 COPY pyproject.toml poetry.lock /code/
 RUN poetry config virtualenvs.create false
-RUN poetry install --no-interaction --no-ansi
+RUN poetry install --no-root --no-interaction --no-ansi
 COPY . /code
 
 ENV SECRET_KEY "7gumcUcqQSoXD6Q41rIi714rmIwUNwoIJ0Lv6urjWJCHf9R5z4"
