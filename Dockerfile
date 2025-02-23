@@ -12,7 +12,7 @@ WORKDIR /code
 RUN pip install poetry
 COPY pyproject.toml poetry.lock /code/
 RUN poetry config virtualenvs.create false
-RUN poetry install --only main --no-root --no-interaction
+RUN poetry install --no-interaction --no-ansi
 COPY . /code
 
 ENV SECRET_KEY "7gumcUcqQSoXD6Q41rIi714rmIwUNwoIJ0Lv6urjWJCHf9R5z4"
@@ -20,4 +20,4 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["gunicorn","--bind",":8000","--workers","2","junbun.wsgi"]
+CMD ["sh", "-c", "poetry shell && gunicorn junbun.wsgi:application --bind 0.0.0.0:8000"]
